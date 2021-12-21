@@ -16,11 +16,23 @@ import {
   TextButton,
 } from '../../components';
 import { COLORS, FONTS, SIZES, icons, images } from '../../constants/';
+import { connect } from 'react-redux';
+import { toggleTheme } from '../../stores/themeActions';
 
-const Profile = () => {
+const Profile = ({ appTheme, toggleTheme }) => {
   const [newCourseNotification, setNewCourseNotification] =
     React.useState(false);
   const [studyReminder, setStudyReminder] = React.useState(false);
+
+  // Handler toggle
+  function toggleThemeHandler() {
+    if (appTheme?.name === 'light') {
+      toggleTheme('dark');
+    } else {
+      toggleTheme('light');
+    }
+  }
+
   function renderHeader() {
     return (
       <View
@@ -31,12 +43,13 @@ const Profile = () => {
           justifyContent: 'space-between',
         }}
       >
-        <Text style={{ ...FONTS.h1 }}>Profile</Text>
+        <Text style={{ color: appTheme?.textColor, ...FONTS.h1 }}>Profile</Text>
         <IconButton
           icon={icons.sun}
           iconStyle={{
-            tintColor: COLORS.black,
+            tintColor: appTheme?.tintColor,
           }}
+          onPress={toggleThemeHandler}
         />
       </View>
     );
@@ -51,7 +64,7 @@ const Profile = () => {
           paddingHorizontal: SIZES.radius,
           paddingVertical: 20,
           borderRadius: SIZES.radius,
-          backgroundColor: COLORS.primary3,
+          backgroundColor: appTheme?.backgroundColor2,
         }}
       >
         {/* Profile Imaeg  */}
@@ -159,10 +172,10 @@ const Profile = () => {
               marginTop: SIZES.padding,
               paddingHorizontal: SIZES.radius,
               borderRadius: 20,
-              backgroundColor: COLORS.white,
+              backgroundColor: appTheme?.backgroundColor4,
             }}
             labelStyle={{
-              color: COLORS.primary,
+              color: appTheme?.textColor2,
             }}
           />
         </View>
@@ -222,7 +235,7 @@ const Profile = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: COLORS.white,
+        backgroundColor: appTheme.backgroundColor1,
       }}
     >
       {/* Header Section  */}
@@ -257,4 +270,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+function mapStateToProps(state) {
+  return {
+    appTheme: state.appTheme,
+    error: state.error,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    toggleTheme: (themeType) => dispatch(toggleTheme(themeType)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

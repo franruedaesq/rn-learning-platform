@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, Animated } from 'react-native';
 import { COLORS, FONTS, SIZES } from '../constants';
+import { connect } from 'react-redux';
 
-const ProfileRadioButton = ({ icon, label, isSelected, onPress }) => {
+let ProfileRadioButton = ({ appTheme, icon, label, isSelected, onPress }) => {
   const radioAnimated = React.useRef(new Animated.Value(0)).current;
 
   const circleColorAnimated = radioAnimated.interpolate({
@@ -14,6 +15,7 @@ const ProfileRadioButton = ({ icon, label, isSelected, onPress }) => {
     inputRange: [0, 17],
     outputRange: [COLORS.additionalColor4, COLORS.additionalColor13],
   });
+  
 
   React.useEffect(() => {
     if (isSelected) {
@@ -47,7 +49,7 @@ const ProfileRadioButton = ({ icon, label, isSelected, onPress }) => {
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 20,
-          backgroundColor: COLORS.additionalColor11,
+          backgroundColor: appTheme?.backgroundColor3,
         }}
       >
         <Image
@@ -70,6 +72,7 @@ const ProfileRadioButton = ({ icon, label, isSelected, onPress }) => {
       >
         <Text
           style={{
+            color: appTheme?.textColor,
             ...FONTS.h3,
           }}
         >
@@ -104,12 +107,24 @@ const ProfileRadioButton = ({ icon, label, isSelected, onPress }) => {
             borderRadius: 15,
             borderWidth: 5,
             borderColor: circleColorAnimated,
-            backgroundColor: COLORS.white,
+            backgroundColor: appTheme?.backgroundColor1,
           }}
         />
       </TouchableOpacity>
     </View>
   );
 };
+
+function mapStateToProps(state) {
+  return {
+    appTheme: state.appTheme,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+ProfileRadioButton = connect(mapStateToProps, mapDispatchToProps)(ProfileRadioButton)
 
 export { ProfileRadioButton };
