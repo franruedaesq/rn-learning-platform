@@ -1,14 +1,15 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { COLORS, FONTS, SIZES, icons } from '../constants';
+import React from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { COLORS, FONTS, SIZES, icons } from "../constants";
+import { connect } from "react-redux";
 
-const ProfileValue = ({ icon, label, value, onPress }) => {
+let ProfileValue = ({ appTheme, icon, label, value, onPress }) => {
   return (
     <TouchableOpacity
       style={{
-        flexDirection: 'row',
+        flexDirection: "row",
         height: 80,
-        alignItems: 'center',
+        alignItems: "center",
       }}
       onPress={onPress}
     >
@@ -17,15 +18,15 @@ const ProfileValue = ({ icon, label, value, onPress }) => {
         style={{
           width: 40,
           height: 40,
-          alignItems: 'center',
-          justifyContent: 'center',
+          alignItems: "center",
+          justifyContent: "center",
           borderRadius: 20,
-          backgroundColor: COLORS.additionalColor11,
+          backgroundColor: appTheme?.backgroundColor3,
         }}
       >
         <Image
           source={icon}
-          resizeMode='contain'
+          resizeMode="contain"
           style={{
             width: 25,
             height: 25,
@@ -53,6 +54,7 @@ const ProfileValue = ({ icon, label, value, onPress }) => {
         )}
         <Text
           style={{
+            color: appTheme?.textColor,
             ...FONTS.h3,
           }}
         >
@@ -66,10 +68,23 @@ const ProfileValue = ({ icon, label, value, onPress }) => {
         style={{
           width: 15,
           height: 15,
+          tintColor: appTheme?.tintColor
         }}
       />
     </TouchableOpacity>
   );
 };
+
+function mapStateToProps(state) {
+  return {
+    appTheme: state.appTheme,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+ProfileValue = connect(mapStateToProps, mapDispatchToProps)(ProfileValue);
 
 export { ProfileValue };
