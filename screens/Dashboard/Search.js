@@ -5,7 +5,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
   interpolate,
-  useAnimatedGestureHandler,
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
@@ -16,7 +16,7 @@ const Search = () => {
   const scrollViewRef = React.useRef();
 
   const scrollY = useSharedValue(0);
-  const onScroll = useAnimatedGestureHandler((event) => {
+  const onScroll = useAnimatedScrollHandler((event) => {
     scrollY.value = event.contentOffset.y;
   });
 
@@ -129,6 +129,7 @@ const Search = () => {
         ),
       };
     });
+    
     return (
       <Animated.View
         style={[
@@ -149,7 +150,7 @@ const Search = () => {
               flex: 1,
               flexDirection: 'row',
               alignItems: 'center',
-              width: SIZES.width - SIZES.padding * 2,
+              width: SIZES.width - (SIZES.padding * 2),
               paddingHorizontal: SIZES.radius,
               borderRadius: SIZES.radius,
               backgroundColor: COLORS.white,
@@ -186,6 +187,7 @@ const Search = () => {
         backgroundColor: COLORS.white,
       }}
     >
+      <PanGestureHandler onGestureEvent={onScroll} >
       <Animated.ScrollView
         ref={scrollViewRef}
         contentContainerStyle={{
@@ -215,6 +217,7 @@ const Search = () => {
         {/* Browser Categories  */}
         {renderBrowseCategories()}
       </Animated.ScrollView>
+      </PanGestureHandler>
       {/* Search Bar  */}
       {renderSearchBar()}
     </View>
