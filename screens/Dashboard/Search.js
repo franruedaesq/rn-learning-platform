@@ -187,7 +187,6 @@ const Search = () => {
         backgroundColor: COLORS.white,
       }}
     >
-      <PanGestureHandler onGestureEvent={onScroll} >
       <Animated.ScrollView
         ref={scrollViewRef}
         contentContainerStyle={{
@@ -217,7 +216,6 @@ const Search = () => {
         {/* Browser Categories  */}
         {renderBrowseCategories()}
       </Animated.ScrollView>
-      </PanGestureHandler>
       {/* Search Bar  */}
       {renderSearchBar()}
     </View>
